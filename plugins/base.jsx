@@ -18,7 +18,6 @@ module.exports = function(app) {
         return defer.promise;
       }
     },
-
     {
       path: /^\/wut/,
       fn: function wut(req, app) {

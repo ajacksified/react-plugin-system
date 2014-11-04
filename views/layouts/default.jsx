@@ -1,11 +1,7 @@
 var React = require('react');
 
 module.exports = function(app) {
-  var mixins = app.getMixins('base/components/hello');
-
   var Default = React.createClass({
-    mixins: mixins,
-
     render: function() {
       return (
         <html>
@@ -16,5 +12,5 @@ module.exports = function(app) {
     }
   });
 
-  return Default;
+  return app.mutate('base/layouts/default', Default);
 }

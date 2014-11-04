@@ -9,7 +9,7 @@ var config = {
   port: 3000,
   plugins: [
     './plugins/base',
-    './plugins/hello-enhanced'
+    './plugins/hello-correction'
   ]
 }
 

@@ -1,9 +1,10 @@
 var q = require('q');
+var mutate = require('./mutate').mutate;
 
 function App () {
   this.routes = [];
   this.components = {};
-  this.mixins = {};
+  this.mutators = {};
 }
 
 App.prototype.route = function(req) {
@@ -39,9 +40,9 @@ App.prototype.registerPlugin = function(plugin) {
     }).bind(this));
   }
 
-  if (plugin.mixins) {
-    for (var c in plugin.mixins) {
-      this.registerMixins(c, plugin.mixins[c]);
+  if (plugin.mutators) {
+    for (var c in plugin.mutators) {
+      this.registerMutators(c, plugin.mutators[c]);
     }
   }
 }
@@ -53,13 +54,24 @@ App.prototype.registerRoute = function(path, fn) {
   });
 }
 
-App.prototype.registerMixins = function (componentName, mixins) {
-  this.mixins[componentName] = this.mixins[componentName] || [];
-  this.mixins[componentName] = this.mixins[componentName].concat(mixins);
+App.prototype.registerMutators = function (componentName, mutators) {
+  this.mutators[componentName] = this.mutators[componentName] || [];
+  this.mutators[componentName] = this.mutators[componentName].concat(mutators);
 }
 
-App.prototype.getMixins = function (componentName) {
-  return this.mixins[componentName] || [];
+App.prototype.getMutators = function (componentName) {
+  return this.mutators[componentName] || [];
+}
+
+App.prototype.mutate = function(componentName, component) {
+  var args = this.getMutators(componentName);
+
+  if (args.length) {
+    args.splice(0, 0, component);
+    return mutate.apply(component, args);
+  }
+
+  return component;
 }
 
 module.exports = App;

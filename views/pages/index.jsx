@@ -7,11 +7,7 @@ module.exports = function(app) {
   var Layout = LayoutFactory(app);
   var Hello = HelloFactory(app);
 
-  var mixins = app.getMixins('base/pages/index');
-
   var Index = React.createClass({
-    mixins: mixins,
-
     render: function() {
       return (
         <Layout {...this.props}>
@@ -21,6 +17,6 @@ module.exports = function(app) {
     }
   });
 
-  return Index;
+  return app.mutate('base/pages/index', Index);
 }
 
