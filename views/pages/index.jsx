@@ -12,18 +12,10 @@ module.exports = function(app) {
   var Index = React.createClass({
     mixins: mixins,
 
-    componentWillMount: function() {
-      this.props.children = this.props.children || [];
-
-      this.props.children.push(
-        <Hello {...this.props} key='indexpage-hello' />
-      );
-    },
-
     render: function() {
       return (
         <Layout {...this.props}>
-          { this.props.children }
+          <Hello {...this.props} key='indexpage-hello' />
         </Layout>
       );
     }
@@ -31,3 +23,4 @@ module.exports = function(app) {
 
   return Index;
 }
+
