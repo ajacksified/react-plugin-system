@@ -1,25 +1,17 @@
 var React = require('react');
-var nodeJSX = require('node-jsx');
 var q = require('q');
-
-nodeJSX.install({
-  extension: '.jsx'
-});
 
 var IndexPageFactory = require('../views/pages/index');
 
 module.exports = function(app) {
-
   var routes = [
     {
       path: /^(\/)?$/,
       fn: function index(req, app) {
         var defer = q.defer();
-        var IndexPage = React.createFactory(IndexPageFactory(app));
+        var IndexPage = IndexPageFactory(app);
 
-        var page = IndexPage({
-          name: 'Snoo'
-        });
+        var page = <IndexPage name='Snoo' />;
 
         defer.resolve(React.renderToString(page));
 

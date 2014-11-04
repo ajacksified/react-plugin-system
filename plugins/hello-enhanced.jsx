@@ -1,10 +1,5 @@
 var React = require('react');
-var nodeJSX = require('node-jsx');
 var q = require('q');
-
-nodeJSX.install({
-  extension: '.jsx'
-});
 
 var FancyFactory = require('../views/components/fancy');
 

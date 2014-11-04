@@ -1,5 +1,10 @@
 var express = require('express');
 
+var nodeJSX = require('node-jsx');
+nodeJSX.install({
+  extension: '.jsx'
+});
+
 var config = {
   port: 3000,
   plugins: [
