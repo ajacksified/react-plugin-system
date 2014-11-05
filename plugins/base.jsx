@@ -7,7 +7,7 @@ module.exports = function(app) {
   var routes = [
     {
       path: /^(\/)?$/,
-      fn: function index(req, app) {
+      get: function index(req, app) {
         var defer = q.defer();
         var IndexPage = IndexPageFactory(app);
 
@@ -20,7 +20,7 @@ module.exports = function(app) {
     },
     {
       path: /^\/wut/,
-      fn: function wut(req, app) {
+      get: function wut(req, app) {
         var defer = q.defer();
 
         defer.resolve('wut');

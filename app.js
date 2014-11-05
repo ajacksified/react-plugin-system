@@ -14,17 +14,19 @@ App.prototype.route = function(req) {
 
   for(var r in this.routes) {
     params = this.routes[r].path.exec(req.path);
-    fn = this.routes[r].fn;
+    fn = this.routes[r][req.method];
 
-    if (params) {
+    if (params && fn) {
       fn(req, this).fail(function(){
         defer.reject.apply(this, arguments);
       }).then(function(){
         defer.resolve.apply(this, arguments);
       });
-
-      return defer.promise;
+    } else {
+      defer.reject.apply(this, arguments);
     }
+
+    return defer.promise;
   };
 
   defer.reject(req);
@@ -35,9 +37,9 @@ App.prototype.registerPlugin = function(plugin) {
   var plugin = plugin(this);
 
   if (plugin.routes) {
-    plugin.routes.forEach((function(r) {
+    plugin.routes.forEach(function(r) {
       this.registerRoute(r.path, r.fn.bind(this));
-    }).bind(this));
+    }, this);
   }
 
   if (plugin.mutators) {
@@ -59,14 +61,10 @@ App.prototype.registerMutators = function (componentName, mutators) {
   this.mutators[componentName] = this.mutators[componentName].concat(mutators);
 }
 
-App.prototype.getMutators = function (componentName) {
-  return this.mutators[componentName] || [];
-}
-
 App.prototype.mutate = function(componentName, component) {
-  var args = this.getMutators(componentName);
+  var args = this.mutators[componentName];
 
-  if (args.length) {
+  if (args && args.length) {
     args.splice(0, 0, component);
     return mutate.apply(component, args);
   }
